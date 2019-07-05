@@ -8,8 +8,7 @@ export class TestController {
 
     @Get()
     test() {
-        console.log('db user...');
-        console.log(this.configService.get('DATABASE_USER'));
+        console.log('db user... working');
         return this.vehicleTypesService.all();
     }
 }
