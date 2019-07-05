@@ -8,6 +8,10 @@ export class ConfigService {
         this.envConfig = dotenv.parse(fs.readFileSync(filePath));
     }
 
+    get isApiAuthEnabled(): boolean {
+        return Boolean(this.envConfig.API_AUTH_ENABLED);
+    }
+
     get(key: string): string {
         return this.envConfig[key];
     }
