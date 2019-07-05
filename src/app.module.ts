@@ -5,6 +5,8 @@ import {ConfigModule} from './config/config.module';
 import { TestController } from './test/test.controller';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Connection} from 'typeorm';
+import {VehicleTypesService} from './services/vehicle-types.service';
+import {VehiclesTypesEntity} from './entities/vehicles-types.entity';
 
 @Module({
   imports: [
@@ -19,9 +21,15 @@ import {Connection} from 'typeorm';
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
       }),
+      TypeOrmModule.forFeature([
+          VehiclesTypesEntity,
+      ]),
   ],
   controllers: [AppController, TestController],
-  providers: [AppService],
+  providers: [
+      AppService,
+      VehicleTypesService,
+  ],
 })
 export class AppModule {
     constructor(private readonly connection: Connection) {}
