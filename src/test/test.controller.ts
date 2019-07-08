@@ -1,9 +1,10 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Param, Post, Res} from '@nestjs/common';
 import {ConfigService} from '../config/config.service';
 import {VehicleTypesService} from '../services/vehicle-types.service';
 import {UserService} from '../services/user.service';
 import {UserDto} from '../dto/user.dto';
 import {HashService} from '../services/hash.service';
+import {Response} from 'express';
 
 @Controller('test')
 export class TestController {
@@ -15,9 +16,14 @@ export class TestController {
     ) {}
 
     @Get()
-    test() {
+    test(@Res() res: Response) {
         console.log('db user... working');
-        return this.vehicleTypesService.all();
+        // console.log(HttpStatus.OK);
+        return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json({
+                data: this.vehicleTypesService.all(),
+            });
     }
 
     @Get('user')
