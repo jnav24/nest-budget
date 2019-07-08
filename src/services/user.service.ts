@@ -24,4 +24,13 @@ export class UserService {
         await this.user.save(userObj);
         return await this.findById(userObj.id);
     }
+
+    async update(id: string, data: any) {
+        await this.user.update(id, data);
+        return await this.findById(id);
+    }
+
+    async destroy(id: string) {
+        await this.user.delete(id);
+    }
 }
