@@ -19,7 +19,10 @@ export class User {
     })
     rememberMe: string;
 
-    @Column('tinyint')
+    @Column({
+        type: 'tinyint',
+        default: '1',
+    })
     active: number;
 
     @CreateDateColumn()
@@ -29,6 +32,7 @@ export class User {
     updatedAt: string;
 
     @Column({
+        default: '',
         select: false,
     })
     passwordResetToken: string;
