@@ -8,9 +8,8 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {Connection} from 'typeorm';
 import {VehicleTypesService} from './services/vehicle-types.service';
 import {VehiclesTypesEntity} from './entities/vehicles-types.entity';
-import {UserService} from './services/user.service';
-import {User} from './entities/user.entity';
 import {HashService} from './services/hash.service';
+import {UserModule} from './user/user.module';
 
 dotenv.config({ path: './.env' });
 
@@ -27,8 +26,8 @@ dotenv.config({ path: './.env' });
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
       }),
+      UserModule,
       TypeOrmModule.forFeature([
-          User,
           VehiclesTypesEntity,
       ]),
   ],
@@ -36,7 +35,6 @@ dotenv.config({ path: './.env' });
   providers: [
       AppService,
       HashService,
-      UserService,
       VehicleTypesService,
   ],
 })
