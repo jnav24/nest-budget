@@ -13,4 +13,8 @@ export class UserService {
     all(): Promise<User[]> {
         return this.user.find();
     }
+
+    findById(id: string): Promise<User> {
+        return this.user.findOne(id);
+    }
 }

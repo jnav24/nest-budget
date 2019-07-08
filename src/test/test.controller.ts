@@ -1,4 +1,4 @@
-import {Controller, Get} from '@nestjs/common';
+import {Controller, Get, Param} from '@nestjs/common';
 import {ConfigService} from '../config/config.service';
 import {VehicleTypesService} from '../services/vehicle-types.service';
 import {UserService} from '../services/user.service';
@@ -18,7 +18,12 @@ export class TestController {
     }
 
     @Get('user')
-    testUser() {
+    testUsers() {
         return this.userService.all();
+    }
+
+    @Get('user/:id')
+    testGetUser(@Param() param) {
+        return this.userService.findById(param.id);
     }
 }
