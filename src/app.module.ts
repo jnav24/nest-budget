@@ -10,6 +10,7 @@ import {VehicleTypesService} from './services/vehicle-types.service';
 import {VehiclesTypesEntity} from './entities/vehicles-types.entity';
 import {UserService} from './services/user.service';
 import {User} from './entities/user.entity';
+import {HashService} from './services/hash.service';
 
 dotenv.config({ path: './.env' });
 
@@ -34,6 +35,7 @@ dotenv.config({ path: './.env' });
   controllers: [AppController, TestController],
   providers: [
       AppService,
+      HashService,
       UserService,
       VehicleTypesService,
   ],
