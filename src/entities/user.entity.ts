@@ -15,6 +15,7 @@ export class User {
 
     @Column({
         nullable: true,
+        select: false,
     })
     rememberMe: string;
 
@@ -27,12 +28,15 @@ export class User {
     @UpdateDateColumn()
     updatedAt: string;
 
-    @Column()
+    @Column({
+        select: false,
+    })
     passwordResetToken: string;
 
     @Column({
         type: 'timestamp',
         nullable: true,
+        select: false,
     })
     passwordResetExpires: string;
 }
