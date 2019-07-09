@@ -1,8 +1,9 @@
-import {Controller, Get, Res, HttpStatus, Param, Post, Body} from '@nestjs/common';
+import {Controller, Get, Res, HttpStatus, Param, Post, Body, UsePipes} from '@nestjs/common';
 import {Response} from 'express';
 import {UserService} from './user.service';
 import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
+import {ValidationPipe} from '../shared/pipes/validation.pipe';
 
 @Controller('user')
 export class UserController {
@@ -40,6 +41,7 @@ export class UserController {
     }
 
     @Post()
+    @UsePipes(new ValidationPipe())
     async addUser(@Body() userDto: UserDto, @Res() response: Response) {
         try {
             const user = { ...userDto, password: await this.hashService.getHash(userDto.password) };

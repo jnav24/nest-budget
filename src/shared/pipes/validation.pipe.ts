@@ -1,6 +1,6 @@
 import {ArgumentMetadata, BadRequestException, Injectable, PipeTransform} from '@nestjs/common';
 import {plainToClass} from 'class-transformer';
-import {validate} from 'class-validator';
+import {validate, ValidationError} from 'class-validator';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
@@ -17,7 +17,7 @@ export class ValidationPipe implements PipeTransform {
         const errors = await validate(obj);
 
         if (errors.length) {
-            throw new BadRequestException('Validation Failed');
+            throw new BadRequestException(`Validation Failed: ${this.formatErrors(errors)}`);
         }
 
         return value;
@@ -30,5 +30,21 @@ export class ValidationPipe implements PipeTransform {
 
     private isEmpty(obj: { [key: string]: any }) {
         return !Object.keys(obj);
+    }
+
+    /**
+     * Grabs all errors from the ValidationError and converts to a string
+     *
+     * @param {any[]} errors
+     * @returns {string}
+     */
+    private formatErrors(errors: ValidationError[]): string {
+        return errors.map((error) => {
+            for (const constraint in error.constraints) {
+                if (typeof error.constraints[constraint] !== 'undefined') {
+                    return error.constraints[constraint];
+                }
+            }
+        }).join(', ');
     }
 }
