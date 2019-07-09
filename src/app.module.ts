@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {ConfigModule} from './config/config.module';
-import { TestController } from './test/test.controller';
 import * as dotenv from 'dotenv';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Connection} from 'typeorm';
-import {VehicleTypesService} from './services/vehicle-types.service';
-import {VehiclesTypesEntity} from './entities/vehicles-types.entity';
-import {HashService} from './services/hash.service';
+import {VehicleTypesService} from './shared/services/vehicle-types.service';
+import {VehiclesTypesEntity} from './shared/entities/vehicles-types.entity';
+import {HashService} from './shared/services/hash.service';
 import {UserModule} from './user/user.module';
 
 dotenv.config({ path: './.env' });
@@ -31,7 +30,7 @@ dotenv.config({ path: './.env' });
           VehiclesTypesEntity,
       ]),
   ],
-  controllers: [AppController, TestController],
+  controllers: [AppController],
   providers: [
       AppService,
       HashService,

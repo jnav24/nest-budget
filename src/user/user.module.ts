@@ -3,7 +3,7 @@ import {UserService} from './user.service';
 import {UserController} from './user.controller';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {User} from './user.entity';
-import {HashService} from '../services/hash.service';
+import {HashService} from '../shared/services/hash.service';
 
 @Module({
     controllers: [UserController],

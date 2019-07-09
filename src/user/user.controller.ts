@@ -1,7 +1,7 @@
 import {Controller, Get, Res, HttpStatus, Param, Post, Body} from '@nestjs/common';
 import {Response} from 'express';
 import {UserService} from './user.service';
-import {HashService} from '../services/hash.service';
+import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
 
 @Controller('user')
