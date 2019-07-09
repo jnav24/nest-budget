@@ -15,8 +15,12 @@ export class UserService {
         return await this.user.find();
     }
 
-    findById(id: string): Promise<User> {
-        return this.user.findOne(id);
+    async findById(id: string): Promise<User> {
+        return await this.user.findOne(id);
+    }
+
+    async findByEmail(email): Promise<User> {
+        return await this.user.findOne({ where: { username: email } });
     }
 
     async create(user: UserDto) {
