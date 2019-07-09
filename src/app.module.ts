@@ -9,8 +9,15 @@ import {VehicleTypesService} from './shared/services/vehicle-types.service';
 import {VehiclesTypesEntity} from './shared/entities/vehicles-types.entity';
 import {HashService} from './shared/services/hash.service';
 import {UserModule} from './user/user.module';
+import {APP_FILTER} from '@nestjs/core';
+import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
 
 dotenv.config({ path: './.env' });
+
+const HttpExceptionObj = {
+    provide: APP_FILTER,
+    useClass: HttpExceptionFilter,
+};
 
 @Module({
   imports: [
@@ -34,6 +41,7 @@ dotenv.config({ path: './.env' });
   providers: [
       AppService,
       HashService,
+      HttpExceptionObj,
       VehicleTypesService,
   ],
 })
