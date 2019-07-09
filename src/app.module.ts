@@ -11,6 +11,7 @@ import {HashService} from './shared/services/hash.service';
 import {UserModule} from './user/user.module';
 import {APP_FILTER} from '@nestjs/core';
 import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
+import {JwtAuthModule} from './jwt-auth/jwt-auth.module';
 
 dotenv.config({ path: './.env' });
 
@@ -32,6 +33,7 @@ const HttpExceptionObj = {
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
       }),
+      JwtAuthModule,
       UserModule,
       TypeOrmModule.forFeature([
           VehiclesTypesEntity,
