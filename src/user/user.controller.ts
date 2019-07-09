@@ -4,10 +4,10 @@ import {UserService} from './user.service';
 import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
 import {ValidationPipe} from '../shared/pipes/validation.pipe';
-import {AuthGuard} from '../shared/guards/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
-@UseGuards(new AuthGuard())
+@UseGuards(AuthGuard())
 export class UserController {
     constructor(
         private readonly hashService: HashService,
