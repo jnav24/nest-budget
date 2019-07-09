@@ -1,4 +1,4 @@
-import {ArgumentsHost, Catch, ExceptionFilter, HttpException} from '@nestjs/common';
+import {ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger} from '@nestjs/common';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -7,6 +7,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse();
         const request = ctx.getRequest();
         const status = exception.getStatus();
+
+        Logger.error(`${exception.message.error || 'Something unexpected has occurred'}`, request.url, 'ExceptionFilter');
 
         response.status(status).json({
             status,
