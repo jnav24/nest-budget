@@ -1,11 +1,13 @@
-import {Controller, Get, Res, HttpStatus, Param, Post, Body, UsePipes} from '@nestjs/common';
+import {Controller, Get, Res, HttpStatus, Param, Post, Body, UsePipes, UseGuards} from '@nestjs/common';
 import {Response} from 'express';
 import {UserService} from './user.service';
 import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
 import {ValidationPipe} from '../shared/pipes/validation.pipe';
+import {AuthGuard} from '../shared/guards/auth.guard';
 
 @Controller('user')
+@UseGuards(new AuthGuard())
 export class UserController {
     constructor(
         private readonly hashService: HashService,
