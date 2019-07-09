@@ -1,4 +1,4 @@
-import {ArgumentMetadata, BadRequestException, Injectable, PipeTransform} from '@nestjs/common';
+import {ArgumentMetadata, HttpException, HttpStatus, Injectable, PipeTransform} from '@nestjs/common';
 import {plainToClass} from 'class-transformer';
 import {validate, ValidationError} from 'class-validator';
 
@@ -6,7 +6,7 @@ import {validate, ValidationError} from 'class-validator';
 export class ValidationPipe implements PipeTransform {
     async transform(value: any, { metatype }: ArgumentMetadata) {
         if (value instanceof Object && this.isEmpty(value)) {
-            throw new BadRequestException('Validation Failed: Empty State');
+            throw new HttpException('Validation Failed: Empty State', HttpStatus.BAD_REQUEST);
         }
 
         if (!metatype || !this.toValidate(metatype)) {
@@ -17,7 +17,7 @@ export class ValidationPipe implements PipeTransform {
         const errors = await validate(obj);
 
         if (errors.length) {
-            throw new BadRequestException(`Validation Failed: ${this.formatErrors(errors)}`);
+            throw new HttpException(`Validation Failed: ${this.formatErrors(errors)}`, HttpStatus.BAD_REQUEST);
         }
 
         return value;
