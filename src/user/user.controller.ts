@@ -4,7 +4,7 @@ import {UserService} from './user.service';
 import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
 import {ValidationPipe} from '../shared/pipes/validation.pipe';
-import { AuthGuard } from '@nestjs/passport';
+import {AuthGuard} from '@nestjs/passport';
 
 @Controller('user')
 @UseGuards(AuthGuard())

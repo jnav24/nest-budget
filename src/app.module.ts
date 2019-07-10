@@ -2,18 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {ConfigModule} from './config/config.module';
-import * as dotenv from 'dotenv';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Connection} from 'typeorm';
 import {VehicleTypesService} from './shared/services/vehicle-types.service';
 import {VehiclesTypesEntity} from './shared/entities/vehicles-types.entity';
-import {HashService} from './shared/services/hash.service';
-import {UserModule} from './user/user.module';
 import {APP_FILTER} from '@nestjs/core';
 import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
-import {JwtAuthModule} from './jwt-auth/jwt-auth.module';
-
-dotenv.config({ path: './.env' });
+import {SharedModule} from './shared/shared.module';
 
 const HttpExceptionObj = {
     provide: APP_FILTER,
@@ -23,6 +18,7 @@ const HttpExceptionObj = {
 @Module({
   imports: [
       ConfigModule,
+      SharedModule,
       TypeOrmModule.forRoot({
           type: 'mysql',
           host: process.env.DATABASE_HOST,
@@ -33,8 +29,6 @@ const HttpExceptionObj = {
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
       }),
-      JwtAuthModule,
-      UserModule,
       TypeOrmModule.forFeature([
           VehiclesTypesEntity,
       ]),
@@ -42,7 +36,6 @@ const HttpExceptionObj = {
   controllers: [AppController],
   providers: [
       AppService,
-      HashService,
       HttpExceptionObj,
       VehicleTypesService,
   ],
