@@ -5,6 +5,7 @@ import {HashService} from '../shared/services/hash.service';
 import {UserDto} from './user.dto';
 import {ValidationPipe} from '../shared/pipes/validation.pipe';
 import {AuthGuard} from '@nestjs/passport';
+import {User} from './user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -15,7 +16,7 @@ export class UserController {
 
     @Get()
     @UseGuards(AuthGuard())
-    async index(@Res() response: Response) {
+    async index(@Res() response: Response, @User() user) {
         try {
             return response.status(HttpStatus.OK).json({
                 data: await this.userService.all(),
@@ -29,10 +30,10 @@ export class UserController {
     }
 
     @Get(':id')
-    edit(@Param('id') id: string, @Res() response: Response) {
+    async edit(@Param('id') id: string, @Res() response: Response) {
         try {
             return response.status(HttpStatus.OK).json({
-                data: this.userService.findById(id),
+                data: await this.userService.findById(id),
             });
         } catch (error) {
             return response.status(HttpStatus.BAD_REQUEST).json({
