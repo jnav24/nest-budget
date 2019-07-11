@@ -1,7 +1,7 @@
 export interface UserInterface {
     id: string;
     username: string;
-    password: string;
+    password?: string;
     createdAt: string;
-    updatedAt: string;
+    updatedAt?: string;
 }
