@@ -7,7 +7,6 @@ import {ValidationPipe} from '../shared/pipes/validation.pipe';
 import {AuthGuard} from '@nestjs/passport';
 
 @Controller('user')
-@UseGuards(AuthGuard())
 export class UserController {
     constructor(
         private readonly hashService: HashService,
@@ -15,6 +14,7 @@ export class UserController {
     ) {}
 
     @Get()
+    @UseGuards(AuthGuard())
     async index(@Res() response: Response) {
         try {
             return response.status(HttpStatus.OK).json({
