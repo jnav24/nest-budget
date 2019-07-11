@@ -22,8 +22,13 @@ export class UserService {
         return this.toResponseObject(user);
     }
 
-    async findByEmail(email): Promise<User> {
-        return await this.user.findOne({ where: { username: email } });
+    async findByEmail(email: string): Promise<UserInterface> {
+        const user = await this.user.findOne({ where: { username: email } });
+        return this.toResponseObject(user);
+    }
+
+    async getPasswordByEmail(email: string): Promise<{ password: string }> {
+        return await this.user.findOne({ select: ['password'], where: { username: email } });
     }
 
     async create(user: UserDto) {

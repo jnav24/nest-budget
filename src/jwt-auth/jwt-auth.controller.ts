@@ -30,7 +30,9 @@ export class JwtAuthController {
                 throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
             }
 
-            if (await this.hashService.verify(userDto.password, user.password)) {
+            const { password } = await this.userService.getPasswordByEmail(userDto.username);
+
+            if (await this.hashService.verify(userDto.password, password)) {
                 const token = await this.authService.sign({ email: user.username });
 
                 return {
