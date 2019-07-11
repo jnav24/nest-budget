@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from './user.entity';
 import {Repository} from 'typeorm';
@@ -19,16 +19,32 @@ export class UserService {
 
     async findById(id: string): Promise<UserInterface> {
         const user: User = await this.user.findOne(id);
+
+        if (!user) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
         return this.toResponseObject(user);
     }
 
     async findByEmail(email: string): Promise<UserInterface> {
         const user = await this.user.findOne({ where: { username: email } });
+
+        if (!user) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
         return this.toResponseObject(user);
     }
 
     async getPasswordByEmail(email: string): Promise<{ password: string }> {
-        return await this.user.findOne({ select: ['password'], where: { username: email } });
+        const password = await this.user.findOne({ select: ['password'], where: { username: email } });
+
+        if (!password) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
+        return password;
     }
 
     async create(user: UserDto) {

@@ -25,11 +25,6 @@ export class JwtAuthController {
     async authenticate(@Body() userDto: UserDto) {
         try {
             const user: UserInterface = await this.userService.findByEmail(userDto.username);
-
-            if (typeof user === 'undefined' || typeof user.password === 'undefined') {
-                throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
-            }
-
             const { password } = await this.userService.getPasswordByEmail(userDto.username);
 
             if (await this.hashService.verify(userDto.password, password)) {
