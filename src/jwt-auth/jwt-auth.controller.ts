@@ -41,7 +41,7 @@ export class JwtAuthController {
 
             throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
         } catch (error) {
-            throw new HttpException(`Something unexpected had occurred. Please try again later.`, HttpStatus.BAD_REQUEST);
+            throw new HttpException(`${error.response}`, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -12,13 +12,10 @@ export class JwtAuthService {
     ) {}
 
     async sign(payload: JwtAuthInterface): Promise<any> {
-        console.log('jwt-auth.sign');
         return await this.jwtService.sign(payload);
     }
 
     async validate(payload: JwtAuthInterface): Promise<any> {
-        console.log('jwt-auth.service:validate');
-        console.log(payload);
         return await this.userService.findByEmail(payload.email);
     }
 }
