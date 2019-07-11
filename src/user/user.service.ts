@@ -12,8 +12,9 @@ export class UserService {
         private readonly user: Repository<User>,
     ) {}
 
-    async all(): Promise<User[]> {
-        return await this.user.find();
+    async all(): Promise<UserInterface[]> {
+        const users: User[] = await this.user.find();
+        return users.map((user) => this.toResponseObject(user));
     }
 
     async findById(id: string): Promise<User> {
