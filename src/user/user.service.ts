@@ -3,6 +3,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {User} from './user.entity';
 import {Repository} from 'typeorm';
 import {UserDto} from './user.dto';
+import {UserInterface} from './user.interface';
 
 @Injectable()
 export class UserService {
@@ -36,5 +37,10 @@ export class UserService {
 
     async destroy(id: string) {
         await this.user.delete(id);
+    }
+
+    toResponseObject(user: UserInterface) {
+        const { id, username, createdAt } = user;
+        return { id, username, createdAt };
     }
 }
