@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from './user.entity';
 import {Repository} from 'typeorm';
@@ -25,9 +25,16 @@ export class UserService {
     }
 
     async create(user: UserDto) {
-        const userObj: any = await this.user.create(user);
-        await this.user.save(userObj);
-        return await this.findById(userObj.id);
+        try {
+            const userObj: UserInterface = await this.user.create(user);
+            await this.user.save(userObj);
+            return { data: { ...await this.findById(userObj.id) }, success: true };
+        } catch (error) {
+            return {
+                success: false,
+                msg: 'Unable to create user at this time.',
+            };
+        }
     }
 
     async update(id: string, data: any) {
