@@ -1,15 +1,15 @@
 import {Module} from '@nestjs/common';
 import {UserModule} from '../user/user.module';
-import * as dotenv from 'dotenv';
-
-dotenv.config({ path: './.env' });
+import {ConfigModule} from '../config/config.module';
 
 @Module({
     imports: [
+        ConfigModule,
         UserModule,
     ],
     providers: [],
     exports: [
+        ConfigModule,
         UserModule,
     ],
 })

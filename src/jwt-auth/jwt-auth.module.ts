@@ -2,19 +2,26 @@ import {forwardRef, Module} from '@nestjs/common';
 import {JwtAuthService} from './jwt-auth.service';
 import {JwtAuthStrategy} from './jwt-auth.strategy';
 import {JwtModule} from '@nestjs/jwt';
-import {UserModule} from '../user/user.module';
 import {PassportModule} from '@nestjs/passport';
+import {JwtAuthController} from './jwt-auth.controller';
+import {SharedModule} from '../shared/shared.module';
+import {ConfigService} from '../config/config.service';
+
+const env = new ConfigService().read();
 
 @Module({
+    controllers: [
+        JwtAuthController,
+    ],
     imports: [
+        forwardRef(() => SharedModule),
         JwtModule.register({
-            secretOrPrivateKey: process.env.JWT_SECRET,
+            secretOrPrivateKey: env.JWT_SECRET,
             signOptions: {
                 expiresIn: 3600,
             },
         }),
         PassportModule.register({ defaultStrategy: 'jwt' }),
-        forwardRef(() => UserModule),
     ],
     providers: [
         JwtAuthService,
