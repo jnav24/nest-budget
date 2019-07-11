@@ -17,8 +17,9 @@ export class UserService {
         return users.map((user) => this.toResponseObject(user));
     }
 
-    async findById(id: string): Promise<User> {
-        return await this.user.findOne(id);
+    async findById(id: string): Promise<UserInterface> {
+        const user: User = await this.user.findOne(id);
+        return this.toResponseObject(user);
     }
 
     async findByEmail(email): Promise<User> {
