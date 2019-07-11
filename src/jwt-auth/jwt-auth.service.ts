@@ -13,7 +13,7 @@ export class JwtAuthService {
 
     async sign(payload: JwtAuthInterface): Promise<any> {
         console.log('jwt-auth.sign');
-        return this.jwtService.sign(payload);
+        return await this.jwtService.sign(payload);
     }
 
     async validate(payload: JwtAuthInterface): Promise<any> {
