@@ -8,8 +8,6 @@ import {UserInterface} from '../user/user.interface';
 
 @Controller('auth')
 export class JwtAuthController {
-    private readonly env;
-
     constructor(
         private readonly authService: JwtAuthService,
         private readonly hashService: HashService,
