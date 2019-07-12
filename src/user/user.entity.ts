@@ -3,14 +3,14 @@ import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColu
 @Entity()
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
-
-    @Column()
-    username: string;
+    id: string;
 
     @Column({
-        select: false,
+        unique: true,
     })
+    username: string;
+
+    @Column()
     password: string;
 
     @Column({

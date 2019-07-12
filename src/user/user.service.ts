@@ -1,8 +1,9 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from './user.entity';
 import {Repository} from 'typeorm';
 import {UserDto} from './user.dto';
+import {UserInterface} from './user.interface';
 
 @Injectable()
 export class UserService {
@@ -11,18 +12,52 @@ export class UserService {
         private readonly user: Repository<User>,
     ) {}
 
-    async all(): Promise<User[]> {
-        return await this.user.find();
+    async all(): Promise<UserInterface[]> {
+        const users: User[] = await this.user.find();
+        return users.map((user) => this.toResponseObject(user));
     }
 
-    findById(id: string): Promise<User> {
-        return this.user.findOne(id);
+    async findById(id: string): Promise<UserInterface> {
+        const user: User = await this.user.findOne(id);
+
+        if (!user) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
+        return this.toResponseObject(user);
+    }
+
+    async findByEmail(email: string): Promise<UserInterface> {
+        const user = await this.user.findOne({ where: { username: email } });
+
+        if (!user) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
+        return this.toResponseObject(user);
+    }
+
+    async getPasswordByEmail(email: string): Promise<{ password: string }> {
+        const password = await this.user.findOne({ select: ['password'], where: { username: email } });
+
+        if (!password) {
+            throw new HttpException(`Username and/or password is incorrect`, HttpStatus.UNAUTHORIZED);
+        }
+
+        return password;
     }
 
     async create(user: UserDto) {
-        const userObj: any = await this.user.create(user);
-        await this.user.save(userObj);
-        return await this.findById(userObj.id);
+        try {
+            const userObj: UserInterface = await this.user.create(user);
+            await this.user.save(userObj);
+            return { data: { ...await this.findById(userObj.id) }, success: true };
+        } catch (error) {
+            return {
+                success: false,
+                msg: 'Unable to create user at this time.',
+            };
+        }
     }
 
     async update(id: string, data: any) {
@@ -32,5 +67,10 @@ export class UserService {
 
     async destroy(id: string) {
         await this.user.delete(id);
+    }
+
+    toResponseObject(user: UserInterface) {
+        const { id, username, createdAt } = user;
+        return { id, username, createdAt };
     }
 }

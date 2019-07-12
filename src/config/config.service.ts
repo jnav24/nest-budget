@@ -4,8 +4,8 @@ import * as fs from 'fs';
 export class ConfigService {
     private readonly envConfig: { [key: string]: string };
 
-    constructor(filePath: string) {
-        this.envConfig = dotenv.parse(fs.readFileSync(filePath));
+    constructor(filePath: string = './') {
+        this.envConfig = dotenv.parse(fs.readFileSync(`${filePath}.env`));
     }
 
     get isApiAuthEnabled(): boolean {
@@ -14,5 +14,9 @@ export class ConfigService {
 
     get(key: string): string {
         return this.envConfig[key];
+    }
+
+    read() {
+        return this.envConfig;
     }
 }
